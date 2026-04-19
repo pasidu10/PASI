@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASIYA-MD | Mobile Universe</title>
+    
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlBBU0lZQS1NRCBVTklWRVJTRSIsCiAgInNob3J0X25hbWUiOiAiUEFTSVlBLU1EIiwKICAic3RhcnRfdXJsIjogIi4vaW5kZXguaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgInRoZW1lX2NvbG9yIjogIiMwMGYyZmUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi81OTY4LzU5NjgyOTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        body { font-family: 'Poppins', sans-serif; background: #000; color: white; margin: 0; overflow-x: hidden; }
+
+        /* Background Layers with Animation */
+        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; overflow: hidden; }
+        .bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1s ease-in-out; animation: panZoom 20s infinite alternate linear; }
+        .bg-layer.active { opacity: 0.5; }
+
+        @keyframes panZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15) translate(-1%, -1%); }
+        }
+
+        /* Images */
+        #bg-home { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80'); }
+        #bg-bots { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80'); }
+        #bg-editz { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80'); }
+        #bg-store { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80'); }
+        #bg-personal { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80'); }
+        #bg-contact { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80'); }
+
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .nav-btn { cursor: pointer; transition: 0.3s; opacity: 0.6; }
+        .nav-btn.active { color: #00f2fe; opacity: 1; border-bottom: 2px solid #00f2fe; }
+
+        .page-content { display: none; min-height: 80vh; padding-bottom: 80px; }
+        .page-content.active { display: block; animation: fadeInUp 0.8s ease; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bot-item { background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); padding: 12px; border-radius: 15px; font-size: 0.75rem; text-align: center; }
+        .auth-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin-bottom: 15px; color: white; outline: none; transition: 0.3s; }
+        .auth-input:focus { border-color: #00f2fe; background: rgba(255,255,255,0.08); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-container">
+        <div id="bg-home" class="bg-layer active"></div>
+        <div id="bg-bots" class="bg-layer"></div>
+        <div id="bg-editz" class="bg-layer"></div>
+        <div id="bg-store" class="bg-layer"></div>
+        <div id="bg-personal" class="bg-layer"></div>
+        <div id="bg-contact" class="bg-layer"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass-card rounded-none py-4 px-4 overflow-x-auto">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="text-cyan-400 font-bold tracking-tighter" style="font-family: 'Orbitron';">P-MD</div>
+            <div class="flex gap-6 text-[10px] font-bold tracking-widest">
+                <div onclick="showPage('home')" class="nav-btn active" id="btn-home">HOME</div>
+                <div onclick="showPage('bots')" class="nav-btn" id="btn-bots">BOTS</div>
+                <div onclick="showPage('contact')" class="nav-btn" id="btn-contact">CONTACT</div>
+                <div onclick="openAuth()" class="nav-btn text-cyan-400 border border-cyan-400/30 px-3 py-1 rounded-lg">LOGIN</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 pt-24">
+
+        <section id="home" class="page-content active text-center pt-20">
+            <h1 class="text-6xl md:text-9xl font-black mb-4 tracking-tighter" style="font-family: 'Orbitron';">PASIYA<span class="text-cyan-400">.</span></h1>
+            <p class="text-sm md:text-xl text-cyan-200 tracking-[5px] uppercase">Cyber Engineer & Bot Developer</p>
+            <div class="mt-12 flex flex-col gap-4 items-center">
+                <button onclick="showPage('bots')" class="w-64 py-4 bg-cyan-600 rounded-2xl font-bold shadow-lg">EXPLORE PROJECTS</button>
+                <button onclick="showPage('editz')" class="w-64 py-4 glass-card rounded-2xl font-bold">CREATIVE WORKS</button>
+            </div>
+        </section>
+
+        <section id="bots" class="page-content">
+            <h2 class="text-3xl font-bold mb-10 text-cyan-400 italic text-center" style="font-family: 'Orbitron';">BOT UNIVERSE</h2>
+            <div class="space-y-10">
+                <div>
+                    <h3 class="text-sm font-bold mb-4 tracking-widest text-gray-400 uppercase">● Main Projects</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bot-item">PASIYA-MD ULTRA</div>
+                        <div class="bot-item">PASIYA-MD PRIME</div>
+                        <div class="bot-item text-yellow-500 border-yellow-500/30">BINANCE AI BOT</div>
+                        <div class="bot-item text-yellow-500 border-yellow-500/30">FOREX SIGNAL</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold mb-4 tracking-widest text-gray-400 uppercase">● Utility & Support</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bot-item">AUTO REPLY</div>
+                        <div class="bot-item">PDF CONVERTER</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="editz" class="page-content">
+            <h2 class="text-3xl font-bold mb-10 text-purple-400 text-center" style="font-family: 'Orbitron';">PASIYA EDITZ</h2>
+            <div class="grid grid-cols-1 gap-4">
+                <div class="glass-card p-6 rounded-3xl flex items-center gap-5">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center"><i class="fas fa-video text-purple-400"></i></div>
+                    <div><h4 class="font-bold">4K Cinematic Edits</h4><p class="text-[10px] text-gray-400">Premium Gaming & YouTube Montages</p></div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl flex items-center gap-5">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center"><i class="fas fa-palette text-purple-400"></i></div>
+                    <div><h4 class="font-bold">Graphic Design</h4><p class="text-[10px] text-gray-400">Professional Logos & Thumbnails</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page-content text-center">
+            <h2 class="text-3xl font-bold mb-10" style="font-family: 'Orbitron';">GET IN TOUCH</h2>
+            <div class="space-y-4 max-w-sm mx-auto">
+                <a href="https://wa.me/94784548818" class="flex items-center justify-center gap-3 p-5 glass-card rounded-2xl text-green-400 font-bold">
+                    <i class="fab fa-whatsapp"></i> WHATSAPP
+                </a>
+                <a href="tel:94784548818" class="flex items-center justify-center gap-3 p-5 glass-card rounded-2xl text-cyan-400 font-bold">
+                    <i class="fas fa-phone-alt"></i> DIRECT CALL
+                </a>
+
+                <div class="mt-10 p-6 glass-card rounded-[30px] border border-cyan-500/20">
+                    <p class="text-[9px] mb-3 uppercase tracking-[3px] text-cyan-400">Total Profile Views</p>
+                    <img src="https://komarev.com/ghpvc/?username=pasiya-md-app-2026&color=00f2fe&style=flat-square" alt="Visitors">
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/90 backdrop-blur-xl p-6">
+        <div class="glass-card w-full max-w-sm p-8 rounded-[35px] border-cyan-500/30 relative">
+            <button onclick="closeAuth()" class="absolute top-5 right-5 text-gray-500 text-2xl">&times;</button>
+            
+            <div id="loginForm">
+                <h2 class="text-2xl font-bold mb-6 text-cyan-400" style="font-family: 'Orbitron';">LOGIN</h2>
+                <input type="email" placeholder="Email" class="auth-input">
+                <input type="password" placeholder="Password" class="auth-input">
+                <button class="w-full bg-cyan-600 py-4 rounded-xl font-bold">ENTER SYSTEM</button>
+                <p class="mt-6 text-xs text-gray-500 text-center">New User? <span onclick="toggleAuth()" class="text-cyan-400 font-bold cursor-pointer underline">Create Account</span></p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <h2 class="text-2xl font-bold mb-6 text-purple-400" style="font-family: 'Orbitron';">REGISTER</h2>
+                <input type="text" placeholder="Full Name" class="auth-input">
+                <input type="email" placeholder="Email" class="auth-input">
+                <input type="password" placeholder="Password" class="auth-input">
+                <button class="w-full bg-purple-600 py-4 rounded-xl font-bold">JOIN UNIVERSE</button>
+                <p class="mt-6 text-xs text-gray-500 text-center">Already Member? <span onclick="toggleAuth()" class="text-purple-400 font-bold cursor-pointer underline">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(document.getElementById('btn-' + pageId)) document.getElementById('btn-' + pageId).classList.add('active');
+            document.querySelectorAll('.bg-layer').forEach(bg => bg.classList.remove('active'));
+            if(document.getElementById('bg-' + pageId)) document.getElementById('bg-' + pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function openAuth() { document.getElementById('authModal').classList.replace('hidden', 'flex'); }
+        function closeAuth() { document.getElementById('authModal').classList.replace('flex', 'hidden'); }
+        function toggleAuth() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+        }
+
+        // Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>
